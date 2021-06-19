@@ -1,0 +1,91 @@
+@import "~bootstrap/scss/bootstrap";
+
+$gray-700: $gray-700;
+
+body {
+    overflow: hidden;
+}
+
+.dropdown-menu {
+    background-color: $gray-800;
+    border-color: $gray-700;
+    color: $white;
+}
+
+.dropdown-item {
+    color: $white;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: $gray-700;
+  color: $white;
+}
+
+.bg-sp {
+    background-color: $teal-800;
+}
+
+.scroll-y {
+    overflow-y: auto;
+}
+
+.border-left-grey {
+    border-left: 1px solid $gray-700;
+}
+
+.list-group-item.active {
+    background-color: $teal-700;
+    border-color: $teal-700;
+}
+
+.list-group-item-action:active {
+    background-color: $teal-600;
+    color: $white;
+}
+
+.list-group-item {
+    background-color: $gray-800;
+    color: $white;
+    border-color: $gray-700;
+}
+
+.list-group-item-action:focus,
+.list-group-item-action:hover {
+    background-color: $gray-700;
+    color: $white;
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+::-webkit-scrollbar-thumb {
+    background: $gray-800;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $gray-800;
+    // background: #212529;
+}
+::-webkit-scrollbar-track {
+    background: $gray-700;
+    // border-radius: 6px;
+}
+
+.floating-button {
+    width: 56px;
+    height: 56px;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    border-radius: 50%;
+    border: 0;
+    background-color: $teal-800;
+    color: $white;
+    z-index: 99;
+}
+
+.floating-button:hover {
+    background-color: $green-600  ;
+}
