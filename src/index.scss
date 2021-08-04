@@ -1,91 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,900&display=swap');
 @import "~bootstrap/scss/bootstrap";
+@import '~@sweetalert2/theme-dark/dark.min.css';
 
-$gray-700: $gray-700;
+$sp-bg: $gray-900;
+$sp-font-color: $gray-200;
+$sp-font-color-disabled: $gray-500;
+$sp-primary: $purple-500;
+$sp-primary-disabled: $purple-700;
+$sp-primary-anchor: $purple-400;
+$sp-primary-hover: $purple-600;
+$sp-primary-border: $purple-500;
 
 body {
-    overflow: hidden;
+  font-family: 'Lato', sans-serif;
+  overflow: hidden;
+  background-color: $sp-bg;
+  color: $sp-font-color;
+}
+
+a {
+  color: $sp-primary-anchor;
+}
+
+a:hover {
+  color: $sp-primary;
+}
+
+.container-list {
+  background-color: $gray-800;
+  border-color: $gray-700;
+  border-right: 1px;
+}
+
+.btn-primary {
+  background-color: $sp-primary;
+  border-color: $sp-primary-border;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+  background-color: $sp-primary-hover;
+  border-color: $sp-primary-hover;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-primary:disabled {
+  color: $sp-font-color-disabled;
+  background-color: $sp-primary-disabled;
+  border-color: $sp-primary-disabled;
+  box-shadow: none;
+  outline: none;
+}
+
+.form-control {
+  background-color: $gray-800;
+  color: $sp-font-color;
+  border-color: $gray-700;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  background-color: $gray-800;
+  color: $gray-200;
+  border-color: $gray-600;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-check-input {
+  background-color: $gray-800;
+}
+
+.form-check-input:checked {
+  background-color: $sp-primary;
+  border-color: $sp-primary;
+}
+
+.button-new-simplepad {
+  border-color: $gray-700;
+  color: $gray-200;
+  box-shadow: none !important;
+}
+
+
+.btn-list {
+  background-color: $gray-800;
+  color: $gray-200;
+  border-color: $gray-700;
+  text-align: left;
+  border-radius: 0;
+  box-shadow: none;
+  border-top: 0;
+  border-left: 0;
+}
+
+.btn-list:focus,
+.btn-list:hover {
+  background-color: $gray-700;
+  color: $gray-200;
+  box-shadow: none;
+}
+
+.btn-list.active {
+  background-color: $sp-primary;
+}
+
+.w-15 {
+  width: 15% !important;
+}
+
+.w-90 {
+  width: 90% !important;
 }
 
 .dropdown-menu {
-    background-color: $gray-800;
-    border-color: $gray-700;
-    color: $white;
+  background-color: $gray-800;
+  border-color: $gray-700;
+  color: $gray-200;
 }
 
 .dropdown-item {
-    color: $white;
+  color: $gray-200;
 }
 
 .dropdown-item:focus,
 .dropdown-item:hover {
   background-color: $gray-700;
-  color: $white;
+  color: $gray-200;
 }
 
 .bg-sp {
-    background-color: $teal-800;
+  background-color: $teal-800;
 }
 
 .scroll-y {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .border-left-grey {
-    border-left: 1px solid $gray-700;
+  border-left: 1px solid $gray-700;
 }
 
 .list-group-item.active {
-    background-color: $teal-700;
-    border-color: $teal-700;
+  background-color: $teal-700;
+  border-color: $teal-700;
 }
 
 .list-group-item-action:active {
-    background-color: $teal-600;
-    color: $white;
+  background-color: $teal-600;
+  color: $gray-200;
 }
 
 .list-group-item {
-    background-color: $gray-800;
-    color: $white;
-    border-color: $gray-700;
+  background-color: $gray-800;
+  color: $gray-200;
+  border-color: $gray-700;
 }
 
 .list-group-item-action:focus,
 .list-group-item-action:hover {
-    background-color: $gray-700;
-    color: $white;
+  background-color: $gray-700;
+  color: $gray-200;
 }
 
 ::-webkit-scrollbar {
-    width: 13px;
-    height: 13px;
+  width: 13px;
+  height: 13px;
 }
 ::-webkit-scrollbar-thumb {
-    background: $gray-800;
-    border-radius: 6px;
+  background: $gray-800;
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: $gray-800;
-    // background: #212529;
+  background: $gray-800;
+  // background: #212529;
 }
 ::-webkit-scrollbar-track {
-    background: $gray-700;
-    // border-radius: 6px;
+  background: $gray-700;
+  // border-radius: 6px;
 }
 
 .floating-button {
-    width: 56px;
-    height: 56px;
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-    border-radius: 50%;
-    border: 0;
-    background-color: $teal-800;
-    color: $white;
-    z-index: 99;
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  border-radius: 50%;
+  border: 0;
+  background-color: $teal-800;
+  color: $gray-200;
+  z-index: 99;
 }
 
 .floating-button:hover {
-    background-color: $green-600  ;
+  background-color: $green-600;
+}
+
+.container-swal-custom {
+  margin: 0 !important;
+}
+
+.popup-swal-custom {
+  grid-template-columns: 0fr 100fr 0fr !important;
+  box-shadow: none !important;
+}
+
+.simplepad-swal2 {
+  .swal2-input-label {
+    color: #ddd;
+  }
+}
+
+.custom-editor-container {
+  .editor-container {
+    height: calc(100vh - 56px) !important;
+    // height: calc(100vh) !important;
+  }
+}
+
+.full-height-navbar {
+  height: calc(100vh - 56px) !important;
 }

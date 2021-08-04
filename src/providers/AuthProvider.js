@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
-// import app from "../firebase";
+import { auth as fbauth } from "../firebase";
 
 export const AuthContext = React.createContext({
   auth: null,
@@ -19,28 +19,28 @@ export const AuthProvider = (props) => {
   });
 
   const signIn = async (email, password, remember) => {
-      await app.auth().setPersistence(remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
-      await app.auth().signInWithEmailAndPassword(email, password);
+      await fbauth.setPersistence(remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+      await fbauth.signInWithEmailAndPassword(email, password);
   }
 
   const signUp = async (email, password) => {
-    await app.auth().createUserWithEmailAndPassword(email, password);
-    await app.auth().currentUser.sendEmailVerification();
-    app.auth().signOut();
+    await fbauth.createUserWithEmailAndPassword(email, password);
+    await fbauth.currentUser.sendEmailVerification();
+    fbauth.signOut();
   }
 
   const signOut = () => {
-    app.auth().signOut();
+    fbauth.signOut();
   };
 
   const forgotPassword = async (email) => {
-    await app.auth().sendPasswordResetEmail(email);
+    await fbauth.sendPasswordResetEmail(email);
   };
 
   useEffect(() => {
-    let unsubscribe = app.auth().onAuthStateChanged((user) => {
+    let unsubscribe = fbauth.onAuthStateChanged((user) => {
       if (user != null && !user.emailVerified) {
-        app.auth().signOut();
+        fbauth.signOut();
         alert("First verify your email address.");
       }
       else {
