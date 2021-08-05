@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-
+import { toastError } from "./../libs/toast";
 import { AuthContext } from "../providers/AuthProvider";
 
 const FormSchema = Yup.object().shape({
@@ -13,14 +13,11 @@ const FormSchema = Yup.object().shape({
 const SignInPage = (props) => {
   const { signIn } = useContext(AuthContext);
 
-  console.log("signinpage");
-
   const submit = async (values) => {
-    console.log("submit signin");
     try {
       await signIn(values.email, values.password, values.remember);
     } catch (error) {
-      alert(error);
+      toastError(error);
     }
   };
 
@@ -29,7 +26,7 @@ const SignInPage = (props) => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
-            <h1 class="text-center mb-5">Simplepad</h1>
+            <h1 className="text-center mb-5">Simplepad</h1>
 
             <Formik
               initialValues={{
@@ -41,7 +38,7 @@ const SignInPage = (props) => {
               onSubmit={submit}
             >
               {({ errors, touched, isSubmitting }) => (
-                <Form autoComplete="off">
+                <Form>
                   <div className="form-floating mb-3">
                     <Field
                       type="email"
@@ -49,6 +46,7 @@ const SignInPage = (props) => {
                       id="email"
                       className="form-control"
                       placeholder="name@example.com"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="email">Email</label>
                     {errors.email && touched.email ? (
@@ -64,6 +62,7 @@ const SignInPage = (props) => {
                       name="password"
                       className="form-control"
                       placeholder="Password"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="password">Password</label>
                     {errors.password && touched.password ? (
@@ -79,6 +78,7 @@ const SignInPage = (props) => {
                       className="form-check-input"
                       id="remember"
                       name="remember"
+                      disabled={isSubmitting}
                     />
                     <label className="form-check-label" htmlFor="remember">
                       Remember me

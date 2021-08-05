@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-
+import { toastError, toastSuccess } from "./../libs/toast";
 import { AuthContext } from "../providers/AuthProvider";
 
 const FormSchema = Yup.object().shape({
@@ -17,8 +17,9 @@ const SignUpPage = (props) => {
   const submit = async (values) => {
     try {
       await signUp(values.email, values.password);
+      toastSuccess("Sign up successfully. You need to verify your email address first.");
     } catch (error) {
-      alert(error);
+      toastError(error);
     }
   };
 
@@ -27,7 +28,7 @@ const SignUpPage = (props) => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
-            <h1 class="text-center mb-5">Simplepad</h1>
+            <h1 className="text-center mb-5">Simplepad</h1>
 
             <Formik
               initialValues={{
@@ -39,7 +40,7 @@ const SignUpPage = (props) => {
               onSubmit={submit}
             >
               {({ errors, touched, isSubmitting }) => (
-                <Form autoComplete="off">
+                <Form>
                   <div className="form-floating mb-3">
                     <Field
                       type="email"
@@ -47,6 +48,7 @@ const SignUpPage = (props) => {
                       id="email"
                       className="form-control"
                       placeholder="name@example.com"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="email">Email</label>
                     {errors.email && touched.email ? (
@@ -62,6 +64,7 @@ const SignUpPage = (props) => {
                       name="password"
                       className="form-control"
                       placeholder="Password"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="password">Password</label>
                     {errors.password && touched.password ? (
@@ -77,6 +80,7 @@ const SignUpPage = (props) => {
                       name="passwordConfirmation"
                       className="form-control"
                       placeholder="Password confirmation"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="passwordConfirmation">Password Confirmation</label>
                     {errors.passwordConfirmation && touched.passwordConfirmation ? (

@@ -2,17 +2,17 @@ import React, { useContext } from "react";
 import { DataContext } from "../providers/DataProvider";
 import NotepadListItem from "./NotepadListItem";
 import _ from "lodash";
-import modal from "../libs/modal";
+import { modalInput, modalLoading, modalClose } from "../libs/modal";
 
 const NotepadList = (props) => {
-  const { notepadsFilter, newNotepad, setQuery, setNotepadById } = useContext(DataContext);
+  const { notepadsFilter, newNotepad, setQuery, setNewNotepadId } = useContext(DataContext);
 
   const onChangeFilter = _.debounce((e) => {
     setQuery(e.target.value);
   }, 500);
 
   const onNewNotepad = async () => {
-    const response = await modal.inputText(
+    const response = await modalInput(
       "",
       "New Simplepad",
       "Name of the new Simplepad",
@@ -28,12 +28,16 @@ const NotepadList = (props) => {
     }
 
     try {
+      modalLoading("Saving new simplepad...");
+
       const res = await newNotepad({
         name: response.value,
+        language: "plaintext",
       });
 
-      await setNotepadById(res.id);
+      setNewNotepadId(res.id);
       
+      modalClose();
     } catch (error) {
       console.log(error);
     }

@@ -41,10 +41,9 @@ export const AuthProvider = (props) => {
     let unsubscribe = fbauth.onAuthStateChanged((user) => {
       if (user != null && !user.emailVerified) {
         fbauth.signOut();
-        alert("First verify your email address.");
       }
       else {
-        console.log(user);
+        // console.log(user);
         setAuth({
           uid: user != null ? user.uid : null,
           user: user,

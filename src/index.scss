@@ -70,6 +70,14 @@ a:hover {
   box-shadow: none;
 }
 
+.form-control:disabled {
+  background-color: $gray-900;
+  color: $gray-400;
+  border-color: $gray-700;
+  outline: none;
+  box-shadow: none;
+}
+
 .form-check-input {
   background-color: $gray-800;
 }
@@ -222,6 +230,38 @@ a:hover {
   }
 }
 
+.sp-editor-container {
+  height: calc(100vh - 56px) !important;
+}
+
 .full-height-navbar {
   height: calc(100vh - 56px) !important;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+input:-webkit-autofill:disabled,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:disabled,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:disabled,
+select:-webkit-autofill:focus {
+  // background-color: $gray-900;
+  border: 1px solid $gray-700;
+  -webkit-text-fill-color: $sp-font-color;
+  -webkit-box-shadow: $gray-900;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: $sp-font-color;
+}
+
+// .form-control {
+//   background-color: $gray-800;
+//   color: $sp-font-color;
+//   border-color: $gray-700;
+//   outline: none;
+//   box-shadow: none;
+// }

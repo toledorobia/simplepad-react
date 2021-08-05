@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db } from "../firebase";
+import { firebaseDocToObject, firebaseDateNow } from "../libs/helpers";
+import _ from "lodash";
 
 import { AuthContext } from "./AuthProvider";
 
@@ -7,33 +9,39 @@ export const DataContext = React.createContext({
   query: "",
   notepad: null,
   notepads: null,
+  newNotepadId: null,
   notepadsFilter: null,
   newNotepad: null,
   updateNotepad: null,
   deleteNotepad: null,
-  setNotepadById: null,
+  setNewNotepadId: null,
   setQuery: null,
 });
 
 export const DataProvider = (props) => {
-  const { uid } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
 
   const [notepads, setNotepads] = useState(null);
   const [notepadsFilter, setNotepadsFilter] = useState(null);
   const [notepad, setNotepad] = useState(null);
+  const [newNotepadId, setNewNotepadId] = useState(null);
   const [query, setQuery] = useState("");
 
   const newNotepad = (data) => {
+    const now = firebaseDateNow();
+
     return db.collection("notepads").add({ 
+      uid: auth.uid,
       content: "",
-      updateAt: null,
-      createdAt: Date.now(), 
+      updateAt: now,
+      createdAt: now, 
       ...data 
     });
   }
 
   const updateNotepad = (id, data) => {
-    return db.collection("notepads").doc(id).update({ updateAt: Date.now(), ...data });
+    const now = firebaseDateNow();
+    return db.collection("notepads").doc(id).update({ updateAt: now, ...data });
   }
 
   const deleteNotepad = (id) => {
@@ -44,25 +52,14 @@ export const DataProvider = (props) => {
     return db.collection("notepads").doc(id).delete();
   }
 
-  const setNotepadById = async (id) => {
-    const doc = await db.collection("notepads").doc(id).get();
-    console.log("set notepad", doc);
-  }
-
   useEffect(() => {
-    console.log("notepads useEffect");
     const unsubscribe = db
       .collection('notepads')
-      // .orderBy('nombre')
+      .where("uid", "==", auth.uid)
+      .orderBy('name')
       .onSnapshot(
         snap => {
-          const items = snap.docs.map(doc => {
-            let d = doc.data();
-            let id = doc.id;
-
-            return { ...d, id };
-          });
-
+          const items = snap.docs.map(doc => firebaseDocToObject(doc));
           setNotepads(items);
         },
         err => {
@@ -71,7 +68,18 @@ export const DataProvider = (props) => {
       );
 
     return () => unsubscribe();
-  }, [uid]);
+  }, [auth]);
+
+  useEffect(() => {
+    if (newNotepadId != null) {
+      const _notepad = _.find(notepads, { id: newNotepadId });
+      if (_notepad != null) {
+        setNotepad(_notepad);
+      }
+
+      setNewNotepadId(null);
+    }
+  }, [newNotepadId, notepads]);
 
   useEffect(() => {
     let _query = query === null ? '' : query.replace(/ /g, '').toUpperCase();
@@ -91,7 +99,7 @@ export const DataProvider = (props) => {
       newNotepad,
       updateNotepad,
       deleteNotepad,
-      setNotepadById,
+      setNewNotepadId,
       setQuery,
     }}>
       {props.children}

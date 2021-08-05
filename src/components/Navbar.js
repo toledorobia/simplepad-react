@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = (props) => {
-  console.log("Navbar init");
+  // console.log("Navbar init");
   const { auth, signOut } = useContext(AuthContext);
   
   return (

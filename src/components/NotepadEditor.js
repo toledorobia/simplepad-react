@@ -5,7 +5,7 @@ import _ from "lodash";
 import { DataContext } from "../providers/DataProvider";
 
 const NotepadEditor = (props) => {
-  console.log("NotepadEditor");
+  // console.log("NotepadEditor");
   const { notepad, updateNotepad } = useContext(DataContext);
 
   const onChange = useMemo(() => _.debounce((value, event) => {
@@ -20,22 +20,22 @@ const NotepadEditor = (props) => {
 
   if (notepad == null) {
     return (
-      <div className="d-flex justify-content-center align-items-center w-75 vh-100 text-muted">
+      <div className="d-flex justify-content-center align-items-center w-75 sp-editor-container text-muted">
         <div>Select a simplepad</div>
       </div>
     );
   }
 
   return <>
-    <div className="w-75">
+    <div className="w-75 sp-editor-container">
       {notepad && <Editor
         theme="vs-dark"
-        height="100vh"
+        height="100%"
         value={notepad.content}
         defaultLanguage="plaintext"
         onChange={onChange}
         options={{
-          wordWrap: "on",
+          wordWrap: "off",
           quickSuggestions: false,
           minimap: {
             enabled: false

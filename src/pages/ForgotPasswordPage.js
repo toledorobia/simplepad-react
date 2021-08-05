@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-
+import { toastInfo, toastError } from "./../libs/toast";
 import { AuthContext } from "../providers/AuthProvider";
 
 const FormSchema = Yup.object().shape({
@@ -16,13 +16,12 @@ const ForgotPasswordPage = (props) => {
   const submit = async (values) => {
     try {
       await forgotPassword(values.email);
-      alert('Password reset email sent, check your inbox.');
-      
+      toastInfo('Password reset email sent, check your inbox.');
 
       history.replace("/");
 
     } catch (error) {
-      alert(error);
+      toastError(error);
     }
   };
 
@@ -41,8 +40,8 @@ const ForgotPasswordPage = (props) => {
               onSubmit={submit}
             >
               {({ errors, touched, isSubmitting }) => (
-                <Form autoComplete="off">
-                  <h1 class="text-center mb-5">Simplepad</h1>
+                <Form>
+                  <h1 className="text-center mb-5">Simplepad</h1>
                   <p className="text-center">Please enter your email address to request a password reset.</p>
                   
                   <div className="form-floating mb-3">
@@ -51,7 +50,7 @@ const ForgotPasswordPage = (props) => {
                       name="email"
                       id="email"
                       className="form-control"
-                      placeholder="name@example.com"
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="email">Email</label>
                     {errors.email && touched.email ? (

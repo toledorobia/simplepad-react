@@ -2,21 +2,19 @@ import React, { useContext, useCallback } from "react";
 import PropTypes from 'prop-types'
 import { DataContext } from "../providers/DataProvider";
 
-import modal from "../libs/modal";
+import { modalInputWithDelete, modalConfirm } from "../libs/modal";
 
 const NotepadListItem = ({ notepad }) => {
-  console.log("NotepadListItem", notepad.name);
 
   const { setNotepad, updateNotepad, deleteNotepad, notepad: currentNotepad } = useContext(DataContext);
-
   const className = "btn btn-list" + (currentNotepad != null && currentNotepad.id === notepad.id ? " active" : "");
 
   const onOpenNotepad = useCallback(() => {
     setNotepad(notepad);
-  }, [notepad]);
+  }, [notepad, setNotepad]);
 
   const onEditNotepad = useCallback(async () => {
-    const response = await modal.inputTextWithDelete(
+    const response = await modalInputWithDelete(
       notepad.name,
       "Edit Simplepad",
       "Name of the Simplepad",
@@ -37,7 +35,7 @@ const NotepadListItem = ({ notepad }) => {
 
     if (response.isDenied) {
       try {
-        const response2 = await modal.confirm("Delete Simplepad", "Are you sure you want to delete this Simplepad?");
+        const response2 = await modalConfirm("Delete Simplepad", "Are you sure you want to delete this Simplepad?");
 
         if (response2.isConfirmed) {
           await deleteNotepad(notepad.id);
@@ -46,7 +44,7 @@ const NotepadListItem = ({ notepad }) => {
         console.log(error);
       }
     }
-  }, [notepad]);
+  }, [notepad, deleteNotepad, updateNotepad]);
 
   return <>
     {/* <button type="button" className="list-group-item list-group-item-action" onClick={onOpenNotepad}>{notepad.name}</button> */}
