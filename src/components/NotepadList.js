@@ -4,8 +4,8 @@ import NotepadListItem from "./NotepadListItem";
 import _ from "lodash";
 import { modalInput, modalLoading, modalClose } from "../libs/modal";
 
-const NotepadList = (props) => {
-  const { notepadsFilter, newNotepad, setQuery, setNewNotepadId } = useContext(DataContext);
+const NotepadList = () => {
+  const { notepadsFilter, getNotepads, newNotepad, setQuery, setNewNotepadId } = useContext(DataContext);
 
   const onChangeFilter = _.debounce((e) => {
     setQuery(e.target.value);

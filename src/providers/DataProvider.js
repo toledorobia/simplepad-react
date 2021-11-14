@@ -11,6 +11,7 @@ export const DataContext = React.createContext({
   notepads: null,
   newNotepadId: null,
   notepadsFilter: null,
+  getNotepads: null,
   newNotepad: null,
   updateNotepad: null,
   deleteNotepad: null,
@@ -27,15 +28,21 @@ export const DataProvider = (props) => {
   const [newNotepadId, setNewNotepadId] = useState(null);
   const [query, setQuery] = useState("");
 
+  const getNotepads = async () => {
+    const snap = await db.collection("notepads").where("uid", "==", auth.uid).orderBy('name').get();
+    const items = snap.docs.map(doc => firebaseDocToObject(doc, { saved: true }));
+    setNotepads(items);
+  }
+
   const newNotepad = (data) => {
     const now = firebaseDateNow();
 
-    return db.collection("notepads").add({ 
+    return db.collection("notepads").add({
       uid: auth.uid,
       content: "",
       updateAt: now,
-      createdAt: now, 
-      ...data 
+      createdAt: now,
+      ...data
     });
   }
 
@@ -48,7 +55,7 @@ export const DataProvider = (props) => {
     if (notepad != null && notepad.id == id) {
       setNotepad(null);
     }
-    
+
     return db.collection("notepads").doc(id).delete();
   }
 
@@ -59,7 +66,7 @@ export const DataProvider = (props) => {
       .orderBy('name')
       .onSnapshot(
         snap => {
-          const items = snap.docs.map(doc => firebaseDocToObject(doc));
+          const items = snap.docs.map(doc => firebaseDocToObject(doc, { saved: true }));
           setNotepads(items);
         },
         err => {
@@ -68,6 +75,10 @@ export const DataProvider = (props) => {
       );
 
     return () => unsubscribe();
+
+    // getNotepads();
+
+
   }, [auth]);
 
   useEffect(() => {
@@ -79,7 +90,7 @@ export const DataProvider = (props) => {
 
       setNewNotepadId(null);
     }
-  }, [newNotepadId, notepads]);
+  }, [newNotepadId]);
 
   useEffect(() => {
     let _query = query === null ? '' : query.replace(/ /g, '').toUpperCase();
@@ -95,6 +106,7 @@ export const DataProvider = (props) => {
       notepad,
       notepads,
       notepadsFilter,
+      // getNotepads,
       setNotepad,
       newNotepad,
       updateNotepad,

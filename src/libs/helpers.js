@@ -18,14 +18,14 @@ export const clearFirebaseError = (error) => {
   return error == null ? null : { code: error.code, message: error.message };
 }
 
-export const firebaseDocToObject = (doc) => {
+export const firebaseDocToObject = (doc, extraData = {}) => {
   if (doc == null) {
     return null;
   }
 
   let d = doc.data();
   let id = doc.id;
-  return { ...d, id };
+  return { ...d, ...extraData, id };
 }
 
 export const firebaseDateNow = () => {

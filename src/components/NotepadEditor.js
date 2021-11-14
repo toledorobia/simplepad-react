@@ -1,14 +1,14 @@
-import React, { useContext, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import Editor from "@monaco-editor/react";
 import _ from "lodash";
 
 import { DataContext } from "../providers/DataProvider";
 
 const NotepadEditor = (props) => {
-  // console.log("NotepadEditor");
-  const { notepad, updateNotepad } = useContext(DataContext);
+  console.log("NotepadEditor");
+  const { notepad, setNotepad, updateNotepad } = useContext(DataContext);
 
-  const onChange = useMemo(() => _.debounce((value, event) => {
+  const onChangeSave = useMemo(() => _.debounce((value) => {
     try {
       updateNotepad(notepad.id, { content: value });
       console.log("guardado");
@@ -33,7 +33,7 @@ const NotepadEditor = (props) => {
         height="100%"
         value={notepad.content}
         defaultLanguage="plaintext"
-        onChange={onChange}
+        onChange={onChangeSave}
         options={{
           wordWrap: "off",
           quickSuggestions: false,
