@@ -1,3 +1,5 @@
+import React from "react";
+
 import Navbar from "../components/Navbar";
 import NotepadEditor from "../components/NotepadEditor";
 import NotepadList from "../components/NotepadList";
@@ -13,7 +15,7 @@ const HomePage = () => {
         <NotepadEditor />
       </div>
     </div>
-  </>
-}
+  </>;
+};
 
 export default HomePage;

@@ -1,21 +1,30 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import React from "react";
+import { Link, } from "react-router-dom";
+import { Formik, Form, Field, } from "formik";
 import * as Yup from "yup";
-import { toastError } from "./../libs/toast";
-import { AuthContext } from "../providers/AuthProvider";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
+import { toastError, } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().min(5, "5 caracteres minimo").required("Required")
+  password: Yup.string().min(5, "5 caracteres minimo").required("Required"),
 });
 
-const SignInPage = (props) => {
-  const { signIn } = useContext(AuthContext);
+const SignInPage = () => {
+  const auth = getAuth();
 
   const submit = async (values) => {
+    const { email, password, remember, } = values;
+
     try {
-      await signIn(values.email, values.password, values.remember);
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       toastError(error);
     }
@@ -28,20 +37,14 @@ const SignInPage = (props) => {
           <div className="col-md-4">
             <h1 className="text-center mb-5">Simplepad</h1>
 
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-                remember: false
-              }}
+            <Formik initialValues={{ email: "", password: "", remember: false, }}
               validationSchema={FormSchema}
               onSubmit={submit}
             >
-              {({ errors, touched, isSubmitting }) => (
+              {({ errors, touched, isSubmitting, }) => (
                 <Form>
                   <div className="form-floating mb-3">
-                    <Field
-                      type="email"
+                    <Field type="email"
                       name="email"
                       id="email"
                       className="form-control"
@@ -57,8 +60,7 @@ const SignInPage = (props) => {
                   </div>
 
                   <div className="form-floating mb-3">
-                    <Field
-                      type="password"
+                    <Field type="password"
                       name="password"
                       className="form-control"
                       placeholder="Password"
@@ -73,20 +75,19 @@ const SignInPage = (props) => {
                   </div>
 
                   <div className="form-check mb-3">
-                    <Field
-                      type="checkbox"
+                    <Field type="checkbox"
                       className="form-check-input"
                       id="remember"
                       name="remember"
                       disabled={isSubmitting}
                     />
-                    <label className="form-check-label" htmlFor="remember">
+                    <label className="form-check-label"
+                      htmlFor="remember">
                       Remember me
                     </label>
                   </div>
 
-                  <button
-                    type="submit"
+                  <button type="submit"
                     className="btn btn-primary btn-lg w-100"
                     disabled={isSubmitting}
                   >
@@ -99,9 +100,9 @@ const SignInPage = (props) => {
             <div className="mt-2 text-end">
               <Link to="/forgot-password">Forgot Password?</Link>
             </div>
-            
+
             <div className="mt-4 text-center">
-              Don't have an account? <Link to="/sign-up">Sign Up</Link>
+              Don&quot;t have an account? <Link to="/sign-up">Sign Up</Link>
             </div>
 
           </div>

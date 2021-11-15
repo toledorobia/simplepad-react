@@ -1,22 +1,31 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import React from "react";
+import { Link, } from "react-router-dom";
+import { Formik, Form, Field, } from "formik";
 import * as Yup from "yup";
-import { toastError, toastSuccess } from "./../libs/toast";
-import { AuthContext } from "../providers/AuthProvider";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
+import { toastError, toastSuccess, } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().min(5, "5 chars minimum").required("Required"),
-  passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+  passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
 });
 
-const SignUpPage = (props) => {
-  const { signUp } = useContext(AuthContext);
+const SignUpPage = () => {
+  const auth = getAuth();
 
   const submit = async (values) => {
+    const { email, password, } = values;
     try {
-      await signUp(values.email, values.password);
+      await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(auth.currentUser);
+      await signOut(auth);
+
       toastSuccess("Sign up successfully. You need to verify your email address first.");
     } catch (error) {
       toastError(error);
@@ -30,20 +39,14 @@ const SignUpPage = (props) => {
           <div className="col-md-4">
             <h1 className="text-center mb-5">Simplepad</h1>
 
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-                passwordConfirmation: ""
-              }}
+            <Formik initialValues={{ email: "", password: "", passwordConfirmation: "", }}
               validationSchema={FormSchema}
               onSubmit={submit}
             >
-              {({ errors, touched, isSubmitting }) => (
+              {({ errors, touched, isSubmitting, }) => (
                 <Form>
                   <div className="form-floating mb-3">
-                    <Field
-                      type="email"
+                    <Field type="email"
                       name="email"
                       id="email"
                       className="form-control"
@@ -59,8 +62,7 @@ const SignUpPage = (props) => {
                   </div>
 
                   <div className="form-floating mb-3">
-                    <Field
-                      type="password"
+                    <Field type="password"
                       name="password"
                       className="form-control"
                       placeholder="Password"
@@ -75,8 +77,7 @@ const SignUpPage = (props) => {
                   </div>
 
                   <div className="form-floating mb-3">
-                    <Field
-                      type="password"
+                    <Field type="password"
                       name="passwordConfirmation"
                       className="form-control"
                       placeholder="Password confirmation"
@@ -90,8 +91,7 @@ const SignUpPage = (props) => {
                     ) : null}
                   </div>
 
-                  <button
-                    type="submit"
+                  <button type="submit"
                     className="btn btn-primary btn-lg w-100"
                     disabled={isSubmitting}
                   >

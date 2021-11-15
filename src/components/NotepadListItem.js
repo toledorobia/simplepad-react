@@ -1,21 +1,19 @@
-import React, { useContext, useCallback, memo } from "react";
-import PropTypes from 'prop-types'
+import React, { useCallback, memo, } from "react";
+import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { DataContext } from "../providers/DataProvider";
 
-import { toastError } from "../libs/toast";
-import { modalInputWithDelete, modalConfirm, modalLoading, modalClose } from "../libs/modal";
+import { toastError, } from "../libs/toast";
+import { modalInputWithDelete, modalConfirm, modalLoading, modalClose, } from "../libs/modal";
 
-const NotepadListItem = ({ notepad }) => {
+const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
+  console.log("NoteListItem", notepad.name, current);
 
-  const { getNotepads, setNotepad, updateNotepad, deleteNotepad, notepad: currentNotepad } = useContext(DataContext);
-  const className = "btn btn-list" + (currentNotepad != null && currentNotepad.id === notepad.id ? " active" : "");
+  const className = "btn btn-list" + (current ? " active" : "");
+  const handleOnClick = useCallback(() => {
+    onSelectNotepad(notepad);
+  }, [notepad, onSelectNotepad]);
 
-  const onOpenNotepad = useCallback(() => {
-    setNotepad(notepad);
-  }, [notepad, setNotepad]);
-
-  const onEditNotepad = useCallback(async () => {
+  const onEditNotepad = async () => {
     const response = await modalInputWithDelete(
       notepad.name,
       "Edit Simplepad",
@@ -30,8 +28,8 @@ const NotepadListItem = ({ notepad }) => {
     if (response.isConfirmed) {
       try {
         modalLoading();
-        await updateNotepad(notepad.id, { name: response.value });
-        await getNotepads();
+        // await updateNotepad(notepad.id, { name: response.value, });
+        //await getNotepads();
         modalClose();
       } catch (error) {
         toastError(error);
@@ -45,8 +43,8 @@ const NotepadListItem = ({ notepad }) => {
 
         if (response2.isConfirmed) {
           modalLoading();
-          await deleteNotepad(notepad.id);
-          await getNotepads();
+          // await deleteNotepad(notepad.id);
+          //await getNotepads();
           modalClose();
         }
       } catch (error) {
@@ -55,7 +53,7 @@ const NotepadListItem = ({ notepad }) => {
         modalClose();
       }
     }
-  }, [notepad, deleteNotepad, updateNotepad]);
+  };
 
   return <>
     {/* <button type="button" className="list-group-item list-group-item-action" onClick={onOpenNotepad}>{notepad.name}</button> */}
@@ -63,18 +61,28 @@ const NotepadListItem = ({ notepad }) => {
       {/* <button className={`${className} flex-shrink-1`} type="button">
 
       </button> */}
-      <button type="button" className={`${className} w-90`} onClick={onOpenNotepad}>
-        {!notepad.saved && <i className="bi bi-cloud me-2"></i>} 
-        {notepad.saved && <i className="bi bi-cloud-check me-2"></i>} 
+      <button type="button"
+        className={`${className} w-90`}
+        onClick={handleOnClick}>
+        {!notepad.saved && <i className="bi bi-cloud me-2"></i>}
+        {notepad.saved && <i className="bi bi-cloud-check me-2"></i>}
         {notepad.name}
       </button>
-      <button type="button" className={`${className} flex-shrink-1 text-center`} onClick={onEditNotepad}><i className="bi-gear-fill"></i></button>
+      <button type="button"
+        className={`${className} flex-shrink-1 text-center`}
+        onClick={onEditNotepad}><i className="bi-gear-fill"></i></button>
     </div>
-  </>
+  </>;
 };
 
 NotepadListItem.propTypes = {
   notepad: PropTypes.object.isRequired,
-}
+  current: PropTypes.bool.isRequired,
+  onSelectNotepad: PropTypes.func.isRequired,
+};
 
-export default memo(NotepadListItem, _.isEqual);
+export default memo(NotepadListItem, (prevProps, nextProps) => {
+  return prevProps.notepad.id === nextProps.notepad.id
+    && prevProps.current === nextProps.current
+    && _.isEqual(prevProps.onSelectNotepad, nextProps.onSelectNotepad);
+});

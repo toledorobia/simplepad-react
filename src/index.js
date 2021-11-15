@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider, } from "react-redux";
 
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import './index.scss';
 
-import { AuthProvider } from "./providers/AuthProvider";
+import "./firebase";
+import store from "./store";
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
+    <Provider store={store}>
       <App />
-    </AuthProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

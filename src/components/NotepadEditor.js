@@ -1,22 +1,29 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useMemo, } from "react";
+import { useDispatch, useSelector, } from "react-redux";
+import { getFirestore, doc, updateDoc, } from "firebase/firestore";
 import Editor from "@monaco-editor/react";
 import _ from "lodash";
 
-import { DataContext } from "../providers/DataProvider";
+const NotepadEditor = () => {
+  const db = getFirestore();
 
-const NotepadEditor = (props) => {
-  console.log("NotepadEditor");
-  const { notepad, setNotepad, updateNotepad } = useContext(DataContext);
+  const notepad = useSelector((state) => state.notepad.notepad);
+  console.log("NotepadEditor", notepad);
+  // const { notepad, setNotepad, updateNotepad, } = useContext(DataContext);
 
-  const onChangeSave = useMemo(() => _.debounce((value) => {
+  const onChangeSave = useMemo(() => _.debounce(async (value) => {
     try {
-      updateNotepad(notepad.id, { content: value });
+      // updateNotepad(notepad.id, { content: value, });
+
+      const ref = doc(db, "notepads", notepad.id);
+      await updateDoc(ref, { content: value, });
+
       console.log("guardado");
     } catch (e) {
       console.log(e);
       alert(e);
     }
-  }, 1000), [notepad, updateNotepad]);
+  }, 1000), [notepad]);
 
   if (notepad == null) {
     return (
@@ -28,8 +35,7 @@ const NotepadEditor = (props) => {
 
   return <>
     <div className="w-75 sp-editor-container">
-      {notepad && <Editor
-        theme="vs-dark"
+      {notepad && <Editor theme="vs-dark"
         height="100%"
         value={notepad.content}
         defaultLanguage="plaintext"
@@ -38,12 +44,12 @@ const NotepadEditor = (props) => {
           wordWrap: "off",
           quickSuggestions: false,
           minimap: {
-            enabled: false
-          }
+            enabled: false,
+          },
         }} />
       }
     </div>
-  </>
+  </>;
 };
 
 export default NotepadEditor;

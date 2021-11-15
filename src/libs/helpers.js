@@ -1,6 +1,6 @@
-import firebase from "firebase/app";
+import { Timestamp, } from "firebase/firestore";
 
-export const clearFirebaseUser = (fbuser) => {
+export const firebaseClearUser = (fbuser) => {
   if (fbuser == null) {
     return null;
   }
@@ -11,12 +11,12 @@ export const clearFirebaseUser = (fbuser) => {
     displayName: fbuser.displayName,
     photoURL: fbuser.photoURL,
     phoneNumber: fbuser.phoneNumber,
-  }
-}
+  };
+};
 
-export const clearFirebaseError = (error) => {
-  return error == null ? null : { code: error.code, message: error.message };
-}
+export const firebaseClearError = (error) => {
+  return error == null ? null : { code: error.code, message: error.message, };
+};
 
 export const firebaseDocToObject = (doc, extraData = {}) => {
   if (doc == null) {
@@ -25,9 +25,9 @@ export const firebaseDocToObject = (doc, extraData = {}) => {
 
   let d = doc.data();
   let id = doc.id;
-  return { ...d, ...extraData, id };
-}
+  return { ...d, ...extraData, id, };
+};
 
 export const firebaseDateNow = () => {
-  return firebase.firestore.Timestamp.fromDate(new Date());
-}
+  return Timestamp.fromDate(new Date());
+};

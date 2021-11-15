@@ -1,0 +1,49 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "indent": ["warn", 2],
+    "comma-dangle": ["warn", {
+      "arrays": "never",
+      "objects": "always",
+      "imports": "always",
+      "exports": "never",
+      "functions": "never"
+    }],
+    "space-before-blocks": ["warn", "always"],
+    "no-async-promise-executor": "off",
+    "no-unused-vars": "warn",
+    "no-multi-spaces": "warn",
+    "no-trailing-spaces": "warn",
+    "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }],
+    "block-spacing": "error",
+    "space-in-parens": ["warn", "never"],
+    "keyword-spacing": ["warn", { "before": true, "after": true }],
+    "semi": "warn",
+    "comma-spacing": ["warn", { "before": false, "after": true }],
+    "react/jsx-max-props-per-line": ["warn", { "when": "always", "maximum": 1 }],
+    "react/jsx-indent-props": ["warn", 2],
+    "react/jsx-first-prop-new-line": ["warn", "never"],
+    "react/jsx-space-before-closing": "warn",
+    "react/no-unescaped-entities": "error",
+    "react/prop-types": "off",
+    "react/jsx-indent": ["warn", 2]
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "build",
+    "dist",
+    "public"
+  ]
+}
