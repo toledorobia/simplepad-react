@@ -9,7 +9,13 @@ export default configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: ["notepad/setNotepads", "notepad/setNotepad", "notepad/setFilter"],
+      ignoredActions: [
+        "notepad/setNotepads",
+        "notepad/setNotepad",
+        "notepad/setFilter",
+        "notepad/setNotepadUnsaved",
+        "notepad/putNotepadUpdate"
+      ],
     },
   }),
 

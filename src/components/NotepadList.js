@@ -2,8 +2,9 @@ import React, { useCallback, } from "react";
 import { useDispatch, useSelector, } from "react-redux";
 import _ from "lodash";
 import { modalInput, modalLoading, modalClose, } from "../libs/modal";
-
-import { setFilter, setNotepad, } from "../features/notepad/notepadSlice";
+import { toastError, } from "../libs/toast";
+import { setFilter, setNotepad, setNotepadById, } from "../features/notepad/notepadSlice";
+import { newNotepad, } from "../backend/notepads";
 
 import NotepadListItem from "./NotepadListItem";
 
@@ -46,16 +47,16 @@ const NotepadList = () => {
     try {
       modalLoading("Saving new simplepad...");
 
-      // const res = await newNotepad({
-      //   name: response.value,
-      //   language: "plaintext",
-      // });
+      const res = await newNotepad({
+        name: response.value,
+        language: "plaintext",
+      });
 
-      // setNewNotepadId(res.id);
-
+      dispatch(setNotepadById(res.id));
       modalClose();
     } catch (error) {
-      console.log(error);
+      modalClose();
+      toastError(error);
     }
   };
 

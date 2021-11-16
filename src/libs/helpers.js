@@ -1,4 +1,5 @@
 import { Timestamp, } from "firebase/firestore";
+import _ from "lodash";
 
 export const firebaseClearUser = (fbuser) => {
   if (fbuser == null) {
@@ -30,4 +31,16 @@ export const firebaseDocToObject = (doc, extraData = {}) => {
 
 export const firebaseDateNow = () => {
   return Timestamp.fromDate(new Date());
+};
+
+export const isNothing = (obj) => {
+  return _.isUndefined(obj) || _.isNull(obj) || _.isNaN(obj);
+};
+
+export const isSomething = (obj) => {
+  return !isNothing(obj);
+};
+
+export const isObjectWithId = (obj) => {
+  return _.isObject(obj) && isSomething(obj.id);
 };

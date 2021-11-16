@@ -1,4 +1,5 @@
 import { createSlice, } from "@reduxjs/toolkit";
+import { isObjectWithId, } from "../../libs/helpers";
 
 const initialState = {
   notepad: null,
@@ -19,10 +20,18 @@ export const notepadSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
+    setNotepadById: (state, action) => {
+      state.notepad = state.notepads == null ? null : state.notepads.find((n) => n.id === action.payload);
+    },
+    setNotepadUnsaved: (state, action) => {
+      if (state.notepad != null) {
+        state.notepad.saved = false;
+      }
+    },
   },
 
 });
 
-export const { setNotepad, setNotepads, setFilter, } = notepadSlice.actions;
+export const { setNotepad, setNotepads, setNotepadById, setFilter, setNotepadUnsaved, } = notepadSlice.actions;
 
 export default notepadSlice.reducer;

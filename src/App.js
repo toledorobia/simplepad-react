@@ -38,7 +38,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // console.log("useEffect notepad");
     if (user == null) {
       dispatch(setNotepads(null));
     }
@@ -50,10 +49,6 @@ const App = () => {
           items.push(firebaseDocToObject(doc, { saved: true, }));
         });
         dispatch(setNotepads(items));
-
-        // const items = snapshot.docs.map(doc => firebaseDocToObject(doc, { saved: true, }));
-        // console.log(items);
-        // dispatch(setNotepads(items));
       },
       err => {
         console.log(err);

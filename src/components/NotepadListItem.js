@@ -9,7 +9,7 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
   console.log("NoteListItem", notepad.name, current);
 
   const className = "btn btn-list" + (current ? " active" : "");
-  const handleOnClick = useCallback(() => {
+  const handleOnSelectNotepad = useCallback(() => {
     onSelectNotepad(notepad);
   }, [notepad, onSelectNotepad]);
 
@@ -63,7 +63,7 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
       </button> */}
       <button type="button"
         className={`${className} w-90`}
-        onClick={handleOnClick}>
+        onClick={handleOnSelectNotepad}>
         {!notepad.saved && <i className="bi bi-cloud me-2"></i>}
         {notepad.saved && <i className="bi bi-cloud-check me-2"></i>}
         {notepad.name}
@@ -83,6 +83,7 @@ NotepadListItem.propTypes = {
 
 export default memo(NotepadListItem, (prevProps, nextProps) => {
   return prevProps.notepad.id === nextProps.notepad.id
+    && prevProps.notepad.name === nextProps.notepad.name
     && prevProps.current === nextProps.current
     && _.isEqual(prevProps.onSelectNotepad, nextProps.onSelectNotepad);
 });
