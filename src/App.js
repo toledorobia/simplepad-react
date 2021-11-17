@@ -44,6 +44,8 @@ const App = () => {
     else {
       const q = query(collection(db, "notepads"), where("uid", "==", user.uid), orderBy("name"));
       const unsubscribe = onSnapshot(q, (snapshot) => {
+        console.log("Snapshot");
+
         const items = [];
         snapshot.forEach((doc) => {
           items.push(firebaseDocToObject(doc, { saved: true, }));

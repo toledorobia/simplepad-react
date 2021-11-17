@@ -10,8 +10,11 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
 
   const className = "btn btn-list" + (current ? " active" : "");
   const handleOnSelectNotepad = useCallback(() => {
-    onSelectNotepad(notepad);
-  }, [notepad, onSelectNotepad]);
+    if (!current) {
+      onSelectNotepad(notepad);
+    }
+
+  }, [notepad, onSelectNotepad, current]);
 
   const onEditNotepad = async () => {
     const response = await modalInputWithDelete(

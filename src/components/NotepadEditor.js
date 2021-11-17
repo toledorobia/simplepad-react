@@ -11,74 +11,43 @@ const NotepadEditor = () => {
   console.log("NotepadEditor");
 
   const dispatch = useDispatch();
-  const editorRef = useRef(null);
-  const disposableRef = useRef(null);
-  const [firstLoad, setFirstLoad] = useState(true);
   const notepad = useSelector((state) => state.notepad.notepad);
+  const editorRef = useRef(null);
 
-  const onChangeSave = useMemo(() => _.debounce(async (value) => {
-    console.log("onChangeSave", notepad.name);
-
+  const saveContent = useCallback(async (value) => {
+    console.log("saveContent", notepad.name);
     try {
       await updateNotepad(notepad.id, { content: value, });
     } catch (e) {
       console.error(e);
       toastError(e);
     }
-  }, 1000), [notepad]);
+  }, [notepad]);
 
-  // useEffect(() => {
-  //   console.log("useEffect editorRef", editorRef.current);
-  // }, [editorRef.current]);
+  const saveDebounce = useMemo(() => _.debounce(async (value) => {
+    await saveContent(value);
+  }, 2000), [notepad]);
 
-  // useEffect(() => {
-  //   if (notepad != null) {
-  //     return;
-  //   }
-
-  //   if (editorRef.current != null) {
-  //     disposableRef.current = editorRef.current.onDidChangeModelContent(event => {
-  //       dispatch(setNotepadUnsaved({ id: notepad.id, }));
-  //       console.log("tecleo!", notepad.name, firstLoad);
-  //     });
-  //   }
-
-  //   return () => {
-  //     if (disposableRef.current != null) {
-  //       disposableRef.current.dispose();
-  //     }
-  //   };
-  // }, [notepad, editorRef.current]);
+  const onChange = useCallback((value) => {
+    dispatch(setNotepadUnsaved({ id: notepad.id, }));
+    saveDebounce(value);
+  }, [notepad]);
 
   const handleEditorDidMount = useCallback((editor, monaco) => {
-    console.log("handleEditorDidMount", editor);
+    // console.log("handleEditorDidMount", editor);
     editorRef.current = editor;
   });
 
   useEffect(() => {
-    if (editorRef.current != null) {
-      disposableRef.current = editorRef.current.onDidChangeModelContent(event => {
-        dispatch(setNotepadUnsaved({ id: notepad.id, }));
-        console.log("tecleo!", notepad.name, firstLoad);
-      });
-    }
-
     return () => {
-      if (disposableRef.current != null) {
-        disposableRef.current.dispose();
+      if (editorRef.current == null) {
+        return;
       }
+
+      console.log("useeffect", notepad.name, editorRef.current.getValue());
+      // saveContent(editorRef.current.getValue());
     };
-  }, [notepad]);
-
-  // const handleEditorDidMount = useCallback((editor, monaco) => {
-  //   editorRef.current = editor;
-
-  //   editor.onDidChangeModelContent(event => {
-  //     setFirstLoad(false);
-  //     dispatch(setNotepadUnsaved({ id: notepad.id, }));
-  //     console.log("tecleo!", notepad.name, firstLoad);
-  //   });
-  // }, [notepad, firstLoad]);
+  });
 
   if (notepad == null) {
     return (
@@ -94,7 +63,7 @@ const NotepadEditor = () => {
         height="100%"
         value={notepad.content}
         defaultLanguage="plaintext"
-        onChange={onChangeSave}
+        onChange={onChange}
         onMount={handleEditorDidMount}
         options={{
           wordWrap: "off",
