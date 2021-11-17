@@ -2,7 +2,8 @@ import React from "react";
 import { Link, useHistory, } from "react-router-dom";
 import { Formik, Form, Field, } from "formik";
 import * as Yup from "yup";
-import { getAuth, sendPasswordResetEmail, } from "firebase/auth";
+
+import { passwordResetEmail, } from "../backend/auth";
 import { toastInfo, toastError, } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
@@ -10,14 +11,13 @@ const FormSchema = Yup.object().shape({
 });
 
 const ForgotPasswordPage = () => {
-  const auth = getAuth();
   const history = useHistory();
 
   const submit = async (values) => {
     const { email, } = values;
 
     try {
-      await sendPasswordResetEmail(auth, email);
+      await passwordResetEmail(email);
       toastInfo('Password reset email sent, check your inbox.');
       history.replace("/");
     } catch (error) {

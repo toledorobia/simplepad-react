@@ -1,13 +1,16 @@
 import React from "react";
 import { useSelector, } from "react-redux";
-import { getAuth, signOut, } from "firebase/auth";
+
+import { signOut, } from "../backend/auth";
 
 const Navbar = () => {
-  const auth = getAuth();
-  const user = useSelector((state) => state.auth.user);
+  console.log("Navbar");
 
-  const signOut = async () => {
-    await signOut(auth);
+  const user = useSelector((state) => state.auth.user);
+  const saved = useSelector((state) => state.notepad.notepads != null && state.notepad.notepads.find((n) => !n.saved) == null);
+
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   return (
@@ -27,9 +30,10 @@ const Navbar = () => {
         <div className="collapse navbar-collapse"
           id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {/* <li className="nav-item">
-              <a className="nav-link"  href="!#">New Simplead</a>
-            </li> */}
+            <li className="nav-item">
+              {saved && <span className="badge rounded-pill bg-success"><i className="bi bi-cloud-check-fill"></i></span>}
+              {!saved && <span className="badge rounded-pill bg-secondary"><i className="bi bi-cloud-fill"></i></span>}
+            </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item dropdown">
@@ -42,7 +46,7 @@ const Navbar = () => {
               <ul className="dropdown-menu shadow"
                 aria-labelledby="navbarDropdown">
                 <li><button className="dropdown-item"
-                  onClick={signOut}>Sign Out</button></li>
+                  onClick={handleSignOut}>Sign Out</button></li>
               </ul>
             </li>
           </ul>

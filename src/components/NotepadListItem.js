@@ -64,8 +64,7 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
       <button type="button"
         className={`${className} w-90`}
         onClick={handleOnSelectNotepad}>
-        {!notepad.saved && <i className="bi bi-cloud me-2"></i>}
-        {notepad.saved && <i className="bi bi-cloud-check me-2"></i>}
+        <i className="bi bi-file-earmark-text-fill me-2"></i>
         {notepad.name}
       </button>
       <button type="button"

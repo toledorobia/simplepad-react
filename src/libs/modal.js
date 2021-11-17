@@ -32,7 +32,7 @@ export const modalClose = () => {
 };
 
 export const modalInput = (value, title, subtitle, validator) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const options = {
       title: title,
       input: 'text',
@@ -50,7 +50,7 @@ export const modalInput = (value, title, subtitle, validator) => {
 };
 
 export const modalInputWithDelete = (value, title, subtitle, validator) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const options = {
       title: title,
       input: 'text',
@@ -70,7 +70,7 @@ export const modalInputWithDelete = (value, title, subtitle, validator) => {
 };
 
 export const modalConfirm = (title, text) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const options = {
       title: title,
       text: text,

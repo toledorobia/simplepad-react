@@ -16,22 +16,22 @@ const show = (type, message) => {
       htmlContainer: "container-swal-custom",
       popup: "popup-swal-custom",
     },
-    html: '<div class="alert alert-' + type + ' mb-0" role="alert">' + message + '</div>'
+    html: '<div class="alert alert-' + type + ' mb-0" role="alert">' + message + '</div>',
   });
-}
+};
 
 export const toastSuccess = (message) => {
   show("success", message);
-}
+};
 
 export const toastError = (message) => {
   show("danger", message);
-}
+};
 
 export const toastWarning = (message) => {
   show("warning", message);
-}
+};
 
 export const toastInfo = (message) => {
   show("info", message);
-}
+};

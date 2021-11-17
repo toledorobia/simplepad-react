@@ -2,13 +2,8 @@ import React from "react";
 import { Link, } from "react-router-dom";
 import { Formik, Form, Field, } from "formik";
 import * as Yup from "yup";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-} from "firebase/auth";
+
+import { signIn, } from "../backend/auth";
 import { toastError, } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
@@ -17,14 +12,11 @@ const FormSchema = Yup.object().shape({
 });
 
 const SignInPage = () => {
-  const auth = getAuth();
-
   const submit = async (values) => {
     const { email, password, remember, } = values;
 
     try {
-      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
+      await signIn(email, password, remember);
     } catch (error) {
       toastError(error);
     }

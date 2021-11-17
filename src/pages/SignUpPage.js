@@ -2,12 +2,8 @@ import React from "react";
 import { Link, } from "react-router-dom";
 import { Formik, Form, Field, } from "formik";
 import * as Yup from "yup";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signOut,
-} from "firebase/auth";
+
+import { signUp, } from "../backend/auth";
 import { toastError, toastSuccess, } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
@@ -17,15 +13,11 @@ const FormSchema = Yup.object().shape({
 });
 
 const SignUpPage = () => {
-  const auth = getAuth();
-
   const submit = async (values) => {
     const { email, password, } = values;
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await sendEmailVerification(auth.currentUser);
-      await signOut(auth);
 
+    try {
+      await signUp(email, password);
       toastSuccess("Sign up successfully. You need to verify your email address first.");
     } catch (error) {
       toastError(error);

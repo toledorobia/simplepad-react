@@ -24,9 +24,15 @@ export const notepadSlice = createSlice({
       state.notepad = state.notepads == null ? null : state.notepads.find((n) => n.id === action.payload);
     },
     setNotepadUnsaved: (state, action) => {
-      if (state.notepad != null) {
-        state.notepad.saved = false;
-      }
+      const { id, } = action.payload;
+
+      state.notepads = state.notepads.map((n) => {
+        if (n.id === id) {
+          n.saved = false;
+        }
+
+        return n;
+      });
     },
   },
 
