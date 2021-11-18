@@ -26,6 +26,10 @@ const Navbar = () => {
       <div className="container-fluid">
         <a className="navbar-brand"
           href="!#">
+          <small className="text-muted">
+            React
+          </small>
+          {" "}
           Simplepad
         </a>
         <button className="navbar-toggler"
