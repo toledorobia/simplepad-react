@@ -4,6 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "react-simplepad",
     "public": "build",
     "ignore": [
       "firebase.json",

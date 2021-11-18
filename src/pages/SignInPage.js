@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 import { signIn } from "../backend/auth";
 import { toastError } from "./../libs/toast";
+import AppAuthLogo from "../components/AppAuthLogo";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -28,9 +29,7 @@ const SignInPage = () => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
-            <h1 className="text-center mb-5">
-              Simplepad
-            </h1>
+            <AppAuthLogo />
 
             <Formik initialValues={{ email: "", password: "", remember: false }}
               validationSchema={FormSchema}

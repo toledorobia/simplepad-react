@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 import { passwordResetEmail } from "../backend/auth";
 import { toastInfo, toastError } from "./../libs/toast";
+import AppAuthLogo from "../components/AppAuthLogo";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -31,23 +32,22 @@ const ForgotPasswordPage = () => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
+            <AppAuthLogo />
+            <p className="text-center">
+              Please enter your email address to request a password reset.
+            </p>
+
             <Formik initialValues={{ email: "", password: "", remember: false }}
               validationSchema={FormSchema}
               onSubmit={submit}>
               {({ errors, touched, isSubmitting }) => (
                 <Form>
-                  <h1 className="text-center mb-5">
-                    Simplepad
-                  </h1>
-                  <p className="text-center">
-                    Please enter your email address to request a password reset.
-                  </p>
-
                   <div className="form-floating mb-3">
                     <Field type="email"
                       name="email"
                       id="email"
                       className="form-control"
+                      placeholder="name@example.com"
                       disabled={isSubmitting} />
                     <label htmlFor="email">
                       Email
@@ -69,7 +69,7 @@ const ForgotPasswordPage = () => {
             </Formik>
 
             <div className="mt-4 text-center">
-              <Link to="/sign-up">
+              <Link to="/">
                 Back
               </Link>
             </div>
