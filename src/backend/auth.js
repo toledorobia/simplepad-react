@@ -10,13 +10,13 @@ import {
   browserSessionPersistence,
 } from "firebase/auth";
 
-export const signIn = async (email, password, remember) => {
+export const signIn = async(email, password, remember) => {
   const auth = getAuth();
   await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
   return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signUp = async (email, password) => {
+export const signUp = async(email, password) => {
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
   await sendEmailVerification(auth.currentUser);

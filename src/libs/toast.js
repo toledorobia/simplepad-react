@@ -1,6 +1,6 @@
 // import { SweetAlertOptions } from 'sweetalert2';
 // import Swal from 'sweetalert2';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const show = (type, message) => {
   Swal.fire({
@@ -16,7 +16,7 @@ const show = (type, message) => {
       htmlContainer: "container-swal-custom",
       popup: "popup-swal-custom",
     },
-    html: '<div class="alert alert-' + type + ' mb-0" role="alert">' + message + '</div>',
+    html: "<div class=\"alert alert-" + type + " mb-0\" role=\"alert\">" + message + "</div>",
   });
 };
 

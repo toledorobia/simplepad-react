@@ -1,22 +1,24 @@
-import React, { useCallback, memo, } from "react";
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React, { useCallback, memo } from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
-import { toastError, } from "../libs/toast";
-import { modalInputWithDelete, modalConfirm, modalLoading, modalClose, } from "../libs/modal";
+import { toastError } from "../libs/toast";
+import { modalInputWithDelete, modalConfirm, modalLoading, modalClose } from "../libs/modal";
+import { updateNotepad, deleteNotepad } from "../backend/notepads";
 
-const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
-  console.log("NoteListItem", notepad.name, current);
+const NotepadListItem = ({ notepad, onSelectNotepad }) => {
+  console.log("NoteListItem", notepad.name);
 
-  const className = "btn btn-list" + (current ? " active" : "");
+  const className = "btn btn-list" + (notepad.selected ? " active" : "");
+
   const handleOnSelectNotepad = useCallback(() => {
-    if (!current) {
+    if (!notepad.selected) {
       onSelectNotepad(notepad);
     }
 
-  }, [notepad, onSelectNotepad, current]);
+  }, [notepad, onSelectNotepad]);
 
-  const onEditNotepad = async () => {
+  const onEditNotepad = async() => {
     const response = await modalInputWithDelete(
       notepad.name,
       "Edit Simplepad",
@@ -31,10 +33,10 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
     if (response.isConfirmed) {
       try {
         modalLoading();
-        // await updateNotepad(notepad.id, { name: response.value, });
-        //await getNotepads();
+        await updateNotepad(notepad.id, { name: response.value });
         modalClose();
-      } catch (error) {
+      }
+      catch (error) {
         toastError(error);
         modalClose();
       }
@@ -46,11 +48,11 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
 
         if (response2.isConfirmed) {
           modalLoading();
-          // await deleteNotepad(notepad.id);
-          //await getNotepads();
+          await deleteNotepad(notepad.id);
           modalClose();
         }
-      } catch (error) {
+      }
+      catch (error) {
         toastError(error);
         console.log(error);
         modalClose();
@@ -72,20 +74,21 @@ const NotepadListItem = ({ notepad, current, onSelectNotepad, }) => {
       </button>
       <button type="button"
         className={`${className} flex-shrink-1 text-center`}
-        onClick={onEditNotepad}><i className="bi-gear-fill"></i></button>
+        onClick={onEditNotepad}>
+        <i className="bi-gear-fill"></i>
+      </button>
     </div>
   </>;
 };
 
 NotepadListItem.propTypes = {
   notepad: PropTypes.object.isRequired,
-  current: PropTypes.bool.isRequired,
   onSelectNotepad: PropTypes.func.isRequired,
 };
 
 export default memo(NotepadListItem, (prevProps, nextProps) => {
   return prevProps.notepad.id === nextProps.notepad.id
     && prevProps.notepad.name === nextProps.notepad.name
-    && prevProps.current === nextProps.current
+    && prevProps.notepad.selected === nextProps.notepad.selected
     && _.isEqual(prevProps.onSelectNotepad, nextProps.onSelectNotepad);
 });

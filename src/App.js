@@ -1,12 +1,12 @@
-import React, { useEffect, } from "react";
-import { useDispatch, useSelector, } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
-import { getAuth, onAuthStateChanged, } from "firebase/auth";
-import { getFirestore, collection, query, where, orderBy, onSnapshot, } from "firebase/firestore";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 
-import { signIn, } from "./features/auth/authSlice";
-import { setNotepads, } from "./features/notepad/notepadSlice";
-import { firebaseClearUser, firebaseDocToObject, } from "./libs/helpers";
+import { signIn } from "./features/auth/authSlice";
+import { setNotepads } from "./features/notepad/notepadSlice";
+import { firebaseClearUser, firebaseDocToObject } from "./libs/helpers";
 
 import LoadingPage from "./pages/LoadingPage";
 import SignInPage from "./pages/SignInPage";
@@ -24,10 +24,11 @@ const App = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    let unsubscribe = onAuthStateChanged(auth, async (user) => {
+    let unsubscribe = onAuthStateChanged(auth, async(user) => {
       if (user != null && !user.emailVerified) {
         await auth.signOut(auth);
-      } else {
+      }
+      else {
         dispatch(signIn(firebaseClearUser(user)));
       }
     });
@@ -48,11 +49,11 @@ const App = () => {
 
         const items = [];
         snapshot.forEach((doc) => {
-          items.push(firebaseDocToObject(doc, { saved: true, }));
+          items.push(firebaseDocToObject(doc, { saved: true, selected: false }));
         });
         dispatch(setNotepads(items));
       },
-      err => {
+      (err) => {
         console.log(err);
       });
 

@@ -1,10 +1,10 @@
 import React from "react";
-import { Link, } from "react-router-dom";
-import { Formik, Form, Field, } from "formik";
+import { Link } from "react-router-dom";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { signIn, } from "../backend/auth";
-import { toastError, } from "./../libs/toast";
+import { signIn } from "../backend/auth";
+import { toastError } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -12,12 +12,13 @@ const FormSchema = Yup.object().shape({
 });
 
 const SignInPage = () => {
-  const submit = async (values) => {
-    const { email, password, remember, } = values;
+  const submit = async(values) => {
+    const { email, password, remember } = values;
 
     try {
       await signIn(email, password, remember);
-    } catch (error) {
+    }
+    catch (error) {
       toastError(error);
     }
   };
@@ -27,13 +28,14 @@ const SignInPage = () => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
-            <h1 className="text-center mb-5">Simplepad</h1>
+            <h1 className="text-center mb-5">
+              Simplepad
+            </h1>
 
-            <Formik initialValues={{ email: "", password: "", remember: false, }}
+            <Formik initialValues={{ email: "", password: "", remember: false }}
               validationSchema={FormSchema}
-              onSubmit={submit}
-            >
-              {({ errors, touched, isSubmitting, }) => (
+              onSubmit={submit}>
+              {({ errors, touched, isSubmitting }) => (
                 <Form>
                   <div className="form-floating mb-3">
                     <Field type="email"
@@ -41,9 +43,10 @@ const SignInPage = () => {
                       id="email"
                       className="form-control"
                       placeholder="name@example.com"
-                      disabled={isSubmitting}
-                    />
-                    <label htmlFor="email">Email</label>
+                      disabled={isSubmitting} />
+                    <label htmlFor="email">
+                      Email
+                    </label>
                     {errors.email && touched.email ? (
                       <div className="form-text text-danger">
                         {errors.email}
@@ -56,9 +59,10 @@ const SignInPage = () => {
                       name="password"
                       className="form-control"
                       placeholder="Password"
-                      disabled={isSubmitting}
-                    />
-                    <label htmlFor="password">Password</label>
+                      disabled={isSubmitting} />
+                    <label htmlFor="password">
+                      Password
+                    </label>
                     {errors.password && touched.password ? (
                       <div className="form-text text-danger">
                         {errors.password}
@@ -71,8 +75,7 @@ const SignInPage = () => {
                       className="form-check-input"
                       id="remember"
                       name="remember"
-                      disabled={isSubmitting}
-                    />
+                      disabled={isSubmitting} />
                     <label className="form-check-label"
                       htmlFor="remember">
                       Remember me
@@ -81,8 +84,7 @@ const SignInPage = () => {
 
                   <button type="submit"
                     className="btn btn-primary btn-lg w-100"
-                    disabled={isSubmitting}
-                  >
+                    disabled={isSubmitting}>
                     Sign In
                   </button>
                 </Form>
@@ -90,11 +92,17 @@ const SignInPage = () => {
             </Formik>
 
             <div className="mt-2 text-end">
-              <Link to="/forgot-password">Forgot Password?</Link>
+              <Link to="/forgot-password">
+                Forgot Password?
+              </Link>
             </div>
 
             <div className="mt-4 text-center">
-              Don&quot;t have an account? <Link to="/sign-up">Sign Up</Link>
+              Don&quot;t have an account?
+              {" "}
+              <Link to="/sign-up">
+                Sign Up
+              </Link>
             </div>
 
           </div>

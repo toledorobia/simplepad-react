@@ -1,5 +1,4 @@
-import { createSlice, } from "@reduxjs/toolkit";
-import { isObjectWithId, } from "../../libs/helpers";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   notepad: null,
@@ -12,7 +11,16 @@ export const notepadSlice = createSlice({
   initialState,
   reducers: {
     setNotepads: (state, action) => {
-      state.notepads = action.payload;
+      const selected = state.notepads?.find((n) => n.selected === true);
+      const notepads = action.payload?.map((n) => {
+        if (selected != null && selected.id === n.id) {
+          n.selected = true;
+        }
+
+        return n;
+      });
+
+      state.notepads = notepads;
     },
     setNotepad: (state, action) => {
       state.notepad = action.payload;
@@ -21,10 +29,28 @@ export const notepadSlice = createSlice({
       state.filter = action.payload;
     },
     setNotepadById: (state, action) => {
-      state.notepad = state.notepads == null ? null : state.notepads.find((n) => n.id === action.payload);
+      // state.notepad = state.notepads == null ? null : state.notepads.find((n) => n.id === action.payload);
+      const id = action.payload;
+
+      state.notepads = state.notepads.map((n) => {
+        if (n.id === id) {
+          n.selected = true;
+        }
+        else {
+          n.selected = false;
+        }
+
+        return n;
+      });
+    },
+    unsetNotepad: (state) => {
+      state.notepads = state.notepads.map((n) => {
+        n.selected = false;
+        return n;
+      });
     },
     setNotepadUnsaved: (state, action) => {
-      const { id, } = action.payload;
+      const { id } = action.payload;
 
       state.notepads = state.notepads.map((n) => {
         if (n.id === id) {
@@ -38,6 +64,6 @@ export const notepadSlice = createSlice({
 
 });
 
-export const { setNotepad, setNotepads, setNotepadById, setFilter, setNotepadUnsaved, } = notepadSlice.actions;
+export const { setNotepads, setNotepadById, setFilter, setNotepadUnsaved, unsetNotepad } = notepadSlice.actions;
 
 export default notepadSlice.reducer;

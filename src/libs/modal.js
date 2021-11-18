@@ -1,6 +1,6 @@
 // import { SweetAlertOptions } from 'sweetalert2';
 // import Swal from 'sweetalert2';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const show = (type, title, message) => {
   Swal.fire({
@@ -32,10 +32,10 @@ export const modalClose = () => {
 };
 
 export const modalInput = (value, title, subtitle, validator) => {
-  return new Promise(async (resolve) => {
+  return new Promise(async(resolve) => {
     const options = {
       title: title,
-      input: 'text',
+      input: "text",
       inputLabel: subtitle,
       inputValue: value,
       showCancelButton: true,
@@ -50,10 +50,10 @@ export const modalInput = (value, title, subtitle, validator) => {
 };
 
 export const modalInputWithDelete = (value, title, subtitle, validator) => {
-  return new Promise(async (resolve) => {
+  return new Promise(async(resolve) => {
     const options = {
       title: title,
-      input: 'text',
+      input: "text",
       inputLabel: subtitle,
       inputValue: value,
       showCancelButton: true,
@@ -70,7 +70,7 @@ export const modalInputWithDelete = (value, title, subtitle, validator) => {
 };
 
 export const modalConfirm = (title, text) => {
-  return new Promise(async (resolve) => {
+  return new Promise(async(resolve) => {
     const options = {
       title: title,
       text: text,

@@ -1,4 +1,4 @@
-import { Timestamp, } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import _ from "lodash";
 
 export const firebaseClearUser = (fbuser) => {
@@ -16,7 +16,7 @@ export const firebaseClearUser = (fbuser) => {
 };
 
 export const firebaseClearError = (error) => {
-  return error == null ? null : { code: error.code, message: error.message, };
+  return error == null ? null : { code: error.code, message: error.message };
 };
 
 export const firebaseDocToObject = (doc, extraData = {}) => {
@@ -26,7 +26,7 @@ export const firebaseDocToObject = (doc, extraData = {}) => {
 
   let d = doc.data();
   let id = doc.id;
-  return { ...d, ...extraData, id, };
+  return { ...d, ...extraData, id };
 };
 
 export const firebaseDateNow = () => {

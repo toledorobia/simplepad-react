@@ -1,4 +1,4 @@
-import { configureStore, } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
 import notepadReducer from "./features/notepad/notepadSlice";
 
@@ -11,12 +11,12 @@ export default configureStore({
     serializableCheck: {
       ignoredActions: [
         "notepad/setNotepads",
-        "notepad/setNotepad",
         "notepad/setFilter",
         "notepad/setNotepadUnsaved",
-        "notepad/putNotepadUpdate"
+        "notepad/putNotepadUpdate",
+        "notepad/setNotepadById",
+        "notepad/unsetNotepad",
       ],
     },
   }),
-
 });

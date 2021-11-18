@@ -1,10 +1,10 @@
 import React from "react";
-import { Link, useHistory, } from "react-router-dom";
-import { Formik, Form, Field, } from "formik";
+import { Link, useHistory } from "react-router-dom";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { passwordResetEmail, } from "../backend/auth";
-import { toastInfo, toastError, } from "./../libs/toast";
+import { passwordResetEmail } from "../backend/auth";
+import { toastInfo, toastError } from "./../libs/toast";
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -13,14 +13,15 @@ const FormSchema = Yup.object().shape({
 const ForgotPasswordPage = () => {
   const history = useHistory();
 
-  const submit = async (values) => {
-    const { email, } = values;
+  const submit = async(values) => {
+    const { email } = values;
 
     try {
       await passwordResetEmail(email);
-      toastInfo('Password reset email sent, check your inbox.');
+      toastInfo("Password reset email sent, check your inbox.");
       history.replace("/");
-    } catch (error) {
+    }
+    catch (error) {
       toastError(error);
     }
   };
@@ -30,23 +31,27 @@ const ForgotPasswordPage = () => {
       <div className="container">
         <div className="row vh-100 justify-content-center align-items-center">
           <div className="col-md-4">
-            <Formik initialValues={{ email: "", password: "", remember: false, }}
+            <Formik initialValues={{ email: "", password: "", remember: false }}
               validationSchema={FormSchema}
-              onSubmit={submit}
-            >
-              {({ errors, touched, isSubmitting, }) => (
+              onSubmit={submit}>
+              {({ errors, touched, isSubmitting }) => (
                 <Form>
-                  <h1 className="text-center mb-5">Simplepad</h1>
-                  <p className="text-center">Please enter your email address to request a password reset.</p>
+                  <h1 className="text-center mb-5">
+                    Simplepad
+                  </h1>
+                  <p className="text-center">
+                    Please enter your email address to request a password reset.
+                  </p>
 
                   <div className="form-floating mb-3">
                     <Field type="email"
                       name="email"
                       id="email"
                       className="form-control"
-                      disabled={isSubmitting}
-                    />
-                    <label htmlFor="email">Email</label>
+                      disabled={isSubmitting} />
+                    <label htmlFor="email">
+                      Email
+                    </label>
                     {errors.email && touched.email ? (
                       <div className="form-text text-danger">
                         {errors.email}
@@ -56,8 +61,7 @@ const ForgotPasswordPage = () => {
 
                   <button type="submit"
                     disabled={isSubmitting}
-                    className="btn btn-primary btn-lg w-100"
-                  >
+                    className="btn btn-primary btn-lg w-100">
                     Reset Password
                   </button>
                 </Form>
@@ -65,7 +69,9 @@ const ForgotPasswordPage = () => {
             </Formik>
 
             <div className="mt-4 text-center">
-              <Link to="/sign-up">Back</Link>
+              <Link to="/sign-up">
+                Back
+              </Link>
             </div>
 
           </div>
