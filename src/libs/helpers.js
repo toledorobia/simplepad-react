@@ -44,3 +44,7 @@ export const isSomething = (obj) => {
 export const isObjectWithId = (obj) => {
   return _.isObject(obj) && isSomething(obj.id);
 };
+
+export const preventDefault = (e) => {
+  e.preventDefault();
+};

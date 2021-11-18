@@ -1,6 +1,28 @@
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { firebaseDateNow } from "../libs/helpers";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import { firebaseDocToObject, firebaseDateNow } from "../libs/helpers";
+import _ from "lodash";
+
+export const snapshotNotepads = async(uid, onSuccess, onError) => {
+  const db = getFirestore();
+
+  const q = query(collection(db, "notepads"), where("uid", "==", uid), orderBy("name"));
+  return onSnapshot(q, (snapshot) => {
+    const items = [];
+
+    snapshot.forEach((doc) => {
+      items.push(firebaseDocToObject(doc));
+    });
+
+    if (_.isFunction(onSuccess)) {
+      onSuccess(items);
+    }
+  }, (err) => {
+    if (_.isFunction(onError)) {
+      onError(err);
+    }
+  });
+};
 
 export const newNotepad = (data) => {
   const db = getFirestore();

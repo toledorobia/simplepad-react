@@ -5,10 +5,22 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   sendPasswordResetEmail,
+  onAuthStateChanged,
   signOut as signOutFirebase,
   browserLocalPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
+import _ from "lodash";
+
+export const snapshotAuthState = (callback) => {
+  const auth = getAuth();
+
+  return onAuthStateChanged(auth, (user) => {
+    if (_.isFunction(callback)) {
+      callback(user);
+    }
+  });
+};
 
 export const signIn = async(email, password, remember) => {
   const auth = getAuth();

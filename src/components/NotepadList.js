@@ -9,8 +9,6 @@ import { newNotepad } from "../backend/notepads";
 import NotepadListItem from "./NotepadListItem";
 
 const NotepadList = () => {
-  console.log("NotepadList");
-
   const dispatch = useDispatch();
 
   const notepads = useSelector((state) => {
@@ -87,7 +85,8 @@ const NotepadList = () => {
           aria-label="Search..." />
         <button className="btn btn-outline-secondary rounded-0 button-new-simplepad border-start-0 flex-shrink-1"
           onClick={onNewNotepad}
-          type="button">
+          type="button"
+          title="New simplepad">
           <i className="bi bi-plus-square-fill"></i>
         </button>
         {/* <button className="btn btn-outline-secondary" type="button">Button</button> */}

@@ -8,8 +8,6 @@ import { updateNotepad } from "../backend/notepads";
 import { toastError } from "../libs/toast";
 
 const NotepadEditor = () => {
-  console.log("NotepadEditor");
-
   const dispatch = useDispatch();
   const notepad = useSelector(
     (state) => state.notepad.notepads?.find((n) => n.selected === true),

@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 
 import { signIn } from "./features/auth/authSlice";
 import { setNotepads } from "./features/notepad/notepadSlice";
-import { firebaseClearUser, firebaseDocToObject } from "./libs/helpers";
+import { firebaseClearUser } from "./libs/helpers";
+
+import { snapshotNotepads } from "./backend/notepads";
+import { snapshotAuthState, signOut } from "./backend/auth";
 
 import LoadingPage from "./pages/LoadingPage";
 import SignInPage from "./pages/SignInPage";
@@ -15,18 +16,15 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
 
 const App = () => {
-  const auth = getAuth();
-  const db = getFirestore();
-
   const dispatch = useDispatch();
   const loaded = useSelector((state) => state.auth.loaded);
   const logged = useSelector((state) => state.auth.logged);
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    let unsubscribe = onAuthStateChanged(auth, async(user) => {
+    const unsubscribe = snapshotAuthState(async(user) => {
       if (user != null && !user.emailVerified) {
-        await auth.signOut(auth);
+        await signOut();
       }
       else {
         dispatch(signIn(firebaseClearUser(user)));
@@ -43,19 +41,15 @@ const App = () => {
       dispatch(setNotepads(null));
     }
     else {
-      const q = query(collection(db, "notepads"), where("uid", "==", user.uid), orderBy("name"));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        console.log("Snapshot");
-
-        const items = [];
-        snapshot.forEach((doc) => {
-          items.push(firebaseDocToObject(doc, { saved: true, selected: false }));
-        });
-        dispatch(setNotepads(items));
-      },
-      (err) => {
-        console.log(err);
-      });
+      const unsubscribe = snapshotNotepads(
+        user.uid,
+        (items) => {
+          dispatch(setNotepads(items.map((i) => ({ ...i, saved: true, selected: false }))));
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
 
       return () => unsubscribe();
     }

@@ -7,8 +7,6 @@ import { modalInputWithDelete, modalConfirm, modalLoading, modalClose } from "..
 import { updateNotepad, deleteNotepad } from "../backend/notepads";
 
 const NotepadListItem = ({ notepad, onSelectNotepad }) => {
-  console.log("NoteListItem", notepad.name);
-
   const className = "btn btn-list" + (notepad.selected ? " active" : "");
 
   const handleOnSelectNotepad = useCallback(() => {
@@ -68,13 +66,15 @@ const NotepadListItem = ({ notepad, onSelectNotepad }) => {
       </button> */}
       <button type="button"
         className={`${className} w-90`}
-        onClick={handleOnSelectNotepad}>
+        onClick={handleOnSelectNotepad}
+        title="Open simplepad">
         <i className="bi bi-file-earmark-text-fill me-2"></i>
         {notepad.name}
       </button>
       <button type="button"
         className={`${className} flex-shrink-1 text-center`}
-        onClick={onEditNotepad}>
+        onClick={onEditNotepad}
+        title="Edit simplepad">
         <i className="bi-gear-fill"></i>
       </button>
     </div>
